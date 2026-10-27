@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TRANSITIA · Prototipo de alta fidelidad</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ BARRA LATERAL ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <svg width="34" height="40" viewBox="0 0 34 40" aria-hidden="true">
+        <rect x="5" y="2" width="24" height="36" rx="8" fill="#0b1118" stroke="#2f6fb3" stroke-width="2"/>
+        <circle cx="17" cy="11" r="4.5" fill="#ff5a5a"/><circle cx="17" cy="20" r="4.5" fill="#f2c744"/><circle cx="17" cy="29" r="4.5" fill="#38d17c"/>
+      </svg>
+      <div><b>TRANSITIA</b><small>Gestión inteligente<br>de tránsito urbano</small></div>
+    </div>
+    <nav id="nav" aria-label="Secciones"></nav>
+    <div class="side-card">
+      <div class="ring num" id="ring">87%</div>
+      <b>Flujo vial</b><br><small>Vehículos en el acceso piloto</small>
+      <p><b class="num" id="sideVeh">1,245</b></p>
+    </div>
+    <div class="profile"><div class="avatar">JM</div><div><b>Administrador</b><small style="display:block">Centro de control</small></div></div>
+  </aside>
+
+  <main class="main">
+    <!-- ============ BARRA SUPERIOR ============ -->
+    <header class="topbar">
+      <div><h1 id="title"></h1><p id="subtitle"></p></div>
+      <div class="top-actions">
+        <div class="seg" role="group" aria-label="Modo de operación">
+          <button data-act="mode" data-mode="auto" class="on">Automático IA</button>
+          <button data-act="mode" data-mode="manual">Manual (emergencia)</button>
+        </div>
+        <button class="btn" data-act="incident">Reportar incidente</button>
+        <div class="clock"><b class="num" id="clock"></b><small id="date"></small></div>
+        <div class="status"><i class="dot"></i><span id="statusTxt">En vivo</span></div>
+      </div>
+    </header>
+
+    <!-- ============ 1. RESUMEN ============ -->
+    <section id="resumen" class="page on">
+      <div class="layout">
+        <div class="col">
+          <article class="card">
+            <header class="card-h"><h2>Mapa en tiempo real</h2><span class="live"><i class="dot"></i>En vivo</span></header>
+            <div class="map" data-map="legend"></div>
+          </article>
+          <div class="kpis" id="kpis"></div>
+          <div class="row2">
+            <article class="card"><header class="card-h"><h2>Espera promedio: ciclo fijo vs IA</h2><small>Última hora</small></header><div class="chart" id="miniChart"></div></article>
+            <article class="card"><header class="card-h"><h2>Distribución del tráfico</h2></header>
+              <div class="donut-wrap"><div class="donut" id="donut"><div id="donutTxt"></div></div><div class="mix" id="mix"></div></div>
+            </article>
+          </div>
+        </div>
+        <div class="col">
+          <article class="card" id="signalCard">
+            <header class="card-h"><h2>Semáforo inteligente</h2><small id="sigName"></small></header>
+            <div class="signal">
+              <div class="lights"><i class="lamp r" id="lampR"></i><i class="lamp y" id="lampY"></i><i class="lamp g" id="lampG"></i></div>
+              <div>
+                <small>Av. Central, acceso principal</small>
+                <div id="sigPhase" style="font-size:20px;font-weight:700"></div>
+                <div class="count num" id="sigCount"></div>
+                <small id="sigNext"></small>
+              </div>
+            </div>
+            <div class="guards"><span class="chip">Verde 15–45 s</span><span class="chip ok">Cruce peatonal ≥ 18 s</span></div>
+            <div class="btns"><button class="btn" data-act="next-phase">Simular cambio de fase</button></div>
+          </article>
+          <article class="card" id="aiCard"></article>
+          <article class="card"><header class="card-h"><h2>Recomendaciones</h2></header><div id="recs"></div>
+            <button class="btn primary" style="width:100%;margin-top:10px" data-act="toast" data-msg="Se calcularon 3 rutas alternativas">Ver rutas alternativas</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 2. MAPA ============ -->
+    <section id="mapa" class="page">
+      <article class="card"><header class="card-h"><h2>Red vial monitoreada</h2><span class="chip">Datos simulados</span></header>
+        <div class="map" data-map="layers"></div></article>
+    </section>
+
+    <!-- ============ 3. SEMÁFOROS ============ -->
+    <section id="semaforos" class="page">
+      <article class="card"><header class="card-h"><h2>Intersecciones</h2><small>La IA opera en la intersección piloto; el resto mantiene ciclo fijo.</small></header>
+        <div style="overflow-x:auto"><table><thead><tr><th>Intersección</th><th>Estado</th><th>Tiempo</th><th>Modo</th><th>Ciclo</th><th></th></tr></thead><tbody id="signalTable"></tbody></table></div>
+      </article>
+    </section>
+
+    <!-- ============ 4. ANÁLISIS ============ -->
+    <section id="analisis" class="page">
+      <div class="layout">
+        <article class="card"><header class="card-h"><h2>Espera promedio por hora (s)</h2><small>Ciclo fijo vs IA adaptativa</small></header><div class="chart" id="bigChart"></div></article>
+        <div class="col">
+          <article class="card"><header class="card-h"><h2>Metas del MVP</h2></header>
+            <div class="goal"><div><span>Reducción de espera (meta ≥ 25%)</span><b id="goalRed">35%</b></div><div class="bar"><i style="width:100%"></i></div></div>
+            <div class="goal"><div><span>Cumplimiento del cruce peatonal</span><b>100%</b></div><div class="bar"><i style="width:100%;background:var(--ok)"></i></div></div>
+          </article>
+          <article class="card"><header class="card-h"><h2>Indicadores</h2></header><div class="rows">
+            <div class="row"><span>Velocidad promedio</span><b>42 km/h</b></div>
+            <div class="row"><span>Congestión máxima</span><b style="color:var(--bad)">Av. Central</b></div>
+            <div class="row"><span>Hora crítica</span><b>08:00</b></div></div></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 5. CÁMARAS ============ -->
+    <section id="camaras" class="page"><div class="cams-grid" id="camGrid"></div></section>
+
+    <!-- ============ 6. REPORTES ============ -->
+    <section id="reportes" class="page"><article class="card"><header class="card-h"><h2>Reportes</h2><small>Se descargan en CSV (abre con Excel)</small></header><div class="rows" id="reportList"></div></article></section>
+
+    <!-- ============ 7. ALERTAS ============ -->
+    <section id="alertas" class="page"><article class="card"><header class="card-h"><h2>Alertas del sistema</h2></header><div class="rows" id="alertList"></div></article></section>
+
+    <!-- ============ 8. CONFIGURACIÓN ============ -->
+    <section id="config" class="page"><div class="layout">
+      <article class="card"><header class="card-h"><h2>Preferencias</h2></header><div class="rows" id="settings"></div></article>
+      <article class="card"><header class="card-h"><h2>Límites de seguridad</h2><small>Fijos en el MVP</small></header><div class="rows">
+        <div class="row"><span>Verde mínimo / máximo</span><b>15 s / 45 s</b></div>
+        <div class="row"><span>Cruce peatonal mínimo</span><b>18 s</b></div>
+        <div class="row"><span>Pre-aprobación del operador</span><b>30 s</b></div></div></article>
+    </div></section>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="js/app.js"></script>
+</body>
+</html>

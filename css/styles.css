@@ -1,0 +1,161 @@
+/* =====================================================================
+   TRANSITIA · Estilos
+   Secciones: 1 Tokens · 2 Base · 3 Layout · 4 Componentes · 5 Mapa
+              6 Semáforo y decisión IA · 7 Gráficos · 8 Páginas · 9 Responsive
+   ===================================================================== */
+
+/* 1. TOKENS (cambia colores y radios aquí) ---------------------------- */
+:root{
+  --bg:#0a1018; --surface:#101a27; --surface-2:#152234; --line:#213246;
+  --text:#e9eff6; --muted:#8a9bb0; --accent:#5aa9ff;
+  --ok:#38d17c; --mod:#f2c744; --slow:#ff9a3d; --bad:#ff5a5a;
+  --r-card:14px; --r-in:10px; --r-chip:6px;
+  --font:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;
+}
+
+/* 2. BASE -------------------------------------------------------------- */
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 var(--font)}
+h1,h2,h3,p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+[hidden]{display:none!important}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+small,.muted{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+
+/* 3. LAYOUT ------------------------------------------------------------ */
+.app{display:grid;grid-template-columns:244px 1fr;min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:18px;
+  padding:20px 14px;background:#0c1520;border-right:1px solid var(--line)}
+.main{padding:22px 28px 40px;min-width:0}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.topbar h1{font-size:24px;letter-spacing:-.01em}
+.topbar p{color:var(--muted);margin-top:2px}
+.top-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.layout{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(320px,1fr);gap:16px;align-items:start}
+.col{display:grid;gap:16px;min-width:0}
+.row2{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.page{display:none}.page.on{display:block}
+
+/* Sidebar */
+.brand{display:flex;align-items:center;gap:12px;padding:2px 8px}
+.brand b{font-size:20px;letter-spacing:.02em}
+.brand small{display:block;line-height:1.25}
+#nav{display:flex;flex-direction:column;gap:4px}
+#nav button{display:flex;align-items:center;gap:12px;padding:10px 12px;border:0;border-radius:var(--r-in);
+  background:transparent;color:#c5d1df;text-align:left;position:relative}
+#nav button:hover{background:var(--surface-2)}
+#nav button.on{background:#17304d;color:#fff;box-shadow:inset 3px 0 0 var(--accent)}
+#nav svg,.ico{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.badge{margin-left:auto;min-width:20px;padding:1px 6px;border-radius:99px;background:var(--bad);color:#fff;font-size:11px;font-weight:700;text-align:center}
+.side-card{margin-top:auto;padding:14px;border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface);text-align:center}
+.ring{--p:87;width:74px;height:74px;margin:0 auto 8px;border-radius:50%;display:grid;place-items:center;font-weight:800;
+  background:radial-gradient(closest-side,var(--surface) 76%,transparent 78%),conic-gradient(var(--ok) calc(var(--p)*1%),#22364b 0)}
+.profile{display:flex;align-items:center;gap:10px;padding:12px 6px 0;border-top:1px solid var(--line)}
+.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#dce6f0;color:#1d2a39;font-weight:800;font-size:13px}
+
+/* 4. COMPONENTES ------------------------------------------------------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);padding:16px}
+.card-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.card-h h2{font-size:15px;font-weight:650}
+.live{display:inline-flex;align-items:center;gap:6px;color:var(--ok);font-size:12px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);animation:blink 2s infinite}
+.btn{padding:8px 14px;border:1px solid var(--line);border-radius:var(--r-in);background:var(--surface-2);transition:.15s}
+.btn:hover{border-color:#34506e;background:#1a2b41}
+.btn.primary{background:#1f5fae;border-color:#2c73cc;color:#fff}.btn.primary:hover{background:#2a70c8}
+.btn.danger{color:#ff8f8f}.btn.sm{padding:5px 10px;font-size:13px}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.seg{display:inline-flex;padding:3px;border:1px solid var(--line);border-radius:var(--r-in);background:var(--surface)}
+.seg button{padding:6px 12px;border:0;border-radius:7px;background:transparent;color:var(--muted)}
+.seg button.on{background:#17304d;color:#fff}
+.seg button.on[data-mode=manual]{background:#4a3410;color:#ffd27a}
+.chip{display:inline-block;padding:2px 9px;border-radius:var(--r-chip);font-size:12px;font-weight:600;background:#17304d;color:#9cc9ff}
+.chip.ok{background:#12372a;color:var(--ok)}.chip.mod{background:#3d3412;color:var(--mod)}
+.chip.slow{background:#43280f;color:var(--slow)}.chip.bad{background:#472024;color:#ff8585}
+.status{display:flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid var(--line);border-radius:var(--r-in);background:var(--surface)}
+.clock{text-align:right;line-height:1.2}.clock small{display:block}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{padding:14px;border:1px solid var(--line);border-radius:var(--r-in);background:var(--surface)}
+.kpi strong{display:block;font-size:26px;margin:4px 0 2px;letter-spacing:-.02em}
+.kpi span{font-size:12px}
+.rows{display:grid;gap:10px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-in);background:var(--surface-2)}
+.row small{display:block}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:500;font-size:12px}
+tr.me td{background:#14283f}
+.switch{width:42px;height:24px;border:0;border-radius:20px;background:#2a3d52;position:relative;flex:none}
+.switch:after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#90a2b6;transition:.2s}
+.switch[aria-checked=true]{background:#1f5fae}.switch[aria-checked=true]:after{left:21px;background:#fff}
+.toast{position:fixed;right:22px;bottom:22px;max-width:340px;padding:12px 16px;border:1px solid #2c435c;border-radius:var(--r-in);
+  background:#132435;box-shadow:0 14px 40px #0008;opacity:0;transform:translateY(12px);transition:.25s;pointer-events:none;z-index:20}
+.toast.show{opacity:1;transform:none}
+.bar{height:6px;border-radius:9px;background:#22364b;overflow:hidden}.bar i{display:block;height:100%;background:var(--accent);transition:width 1s linear}
+
+/* 5. MAPA -------------------------------------------------------------- */
+.map{position:relative;border-radius:var(--r-in);overflow:hidden;background:#0d1621;border:1px solid var(--line)}
+.map svg{display:block;width:100%;height:auto}
+.map-legend{position:absolute;right:10px;top:10px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-in);
+  background:#0b1420e6;font-size:12px;display:grid;gap:5px}
+.map-legend label{display:flex;align-items:center;gap:7px}
+.lg{display:inline-block;width:14px;height:5px;border-radius:3px}
+.node.focus circle:first-child{animation:pulse 1s infinite}
+.hide-flow .flow,.hide-signals .nodes,.hide-cams .cams{display:none}
+.cams{opacity:.9}.street{fill:#5f738a;font-size:10px}
+
+/* 6. SEMÁFORO Y DECISIÓN IA ------------------------------------------- */
+.signal{display:flex;gap:18px;align-items:center}
+.lights{display:grid;gap:8px;padding:10px;border-radius:16px;background:#0b1118;box-shadow:inset 0 0 0 2px #2b3643}
+.lamp{width:46px;height:46px;border-radius:50%;background:#1d252e;border:3px solid #0b1118;transition:.2s}
+.lamp.on.r{background:var(--bad);box-shadow:0 0 22px var(--bad)}
+.lamp.on.y{background:var(--mod);box-shadow:0 0 22px var(--mod)}
+.lamp.on.g{background:var(--ok);box-shadow:0 0 22px var(--ok)}
+.count{font-size:44px;font-weight:800;line-height:1;margin:6px 0 4px}
+.guards{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.reason{color:#c3d0de;line-height:1.55}
+.proposal{margin-top:12px;padding:12px;border:1px solid #2c4a6e;border-radius:var(--r-in);background:#10233a}
+.prop-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.proposal input[type=range]{width:100%;accent-color:var(--accent);margin-top:10px}
+.rec{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+.rec:last-child{border:0}.rec div{flex:1}.rec b,.rec small{display:block}
+.tone{width:10px;height:10px;border-radius:50%;flex:none}
+
+/* 7. GRÁFICOS ---------------------------------------------------------- */
+.chart svg{display:block;width:100%;height:auto}
+.chart .grid{stroke:#1d2d41}.chart .axis{fill:#6f8298;font-size:11px}
+.donut-wrap{display:flex;align-items:center;gap:16px}
+.donut{width:128px;height:128px;border-radius:50%;flex:none;display:grid;place-items:center;text-align:center;font-weight:800;line-height:1.2}
+.donut div{width:80px;height:80px;border-radius:50%;background:var(--surface);display:grid;place-items:center}
+.mix{flex:1;display:grid;gap:8px}.mix div{display:flex;align-items:center;gap:8px}.mix b{margin-left:auto}
+
+/* 8. PÁGINAS: cámaras, metas ------------------------------------------ */
+.cams-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.cam-view{position:relative;height:190px;border-radius:var(--r-in);overflow:hidden;
+  background:linear-gradient(180deg,#18232f 0,#0e151d 45%,#252d36 46%,#171d24 100%)}
+.cam-view:before{content:"";position:absolute;left:50%;bottom:0;width:4px;height:54%;background:repeating-linear-gradient(#cfd6de88 0 14px,transparent 14px 28px);transform:translateX(-50%)}
+.box{position:absolute;border:2px solid var(--ok);border-radius:3px;transition:all 1.4s linear}
+.box span{position:absolute;left:-2px;top:-17px;padding:0 5px;background:var(--ok);color:#06150d;font-size:10px;font-weight:700;white-space:nowrap}
+.box.p{border-color:var(--mod)}.box.p span{background:var(--mod)}
+.rec-tag{position:absolute;left:10px;top:8px;font-size:11px;color:#ff8f8f;text-shadow:0 1px 2px #000}
+.goal{display:grid;gap:6px;margin-bottom:14px}.goal div{display:flex;justify-content:space-between}
+
+/* Animaciones */
+@keyframes blink{50%{opacity:.4}}
+@keyframes pulse{50%{stroke-width:7}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* 9. RESPONSIVE -------------------------------------------------------- */
+@media (max-width:1100px){
+  .app{grid-template-columns:72px 1fr}
+  .brand div,#nav span,.side-card,.profile div:last-child{display:none}
+  #nav button{justify-content:center}.badge{position:absolute;top:2px;right:4px;margin:0}
+  .layout,.row2{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:700px){
+  .app{display:block}.main{padding:16px 14px 90px}
+  .sidebar{position:fixed;inset:auto 0 0 0;z-index:10;height:auto;flex-direction:row;padding:6px;border:0;border-top:1px solid var(--line);overflow-x:auto}
+  .brand,.side-card,.profile{display:none}
+  #nav{flex-direction:row;gap:2px}#nav button{padding:10px 14px}
+  .kpis{grid-template-columns:1fr 1fr}.status,.clock{display:none}
+}
